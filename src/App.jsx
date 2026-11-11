@@ -1,15 +1,14 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { RouterProvider } from 'react-router-dom';
+import { AuthProvider } from '@hooks/useAuth';
+import { router } from '@routes'
 import './App.css'
 
 function App() {
   return (
-    <>
-    <h1>React 19</h1>
-    </>
-  )
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App

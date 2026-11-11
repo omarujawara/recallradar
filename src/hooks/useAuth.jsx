@@ -11,7 +11,6 @@ export function AuthProvider ({children}) {
     const [profileLoading, setProfileLoading] = useState(false);
 
     // Get current session, then listen for login/logout
-
     useEffect(() => {
         supabase.auth.getSession()
             .then(({ data }) => {
