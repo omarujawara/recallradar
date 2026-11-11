@@ -1,1 +1,0 @@
-// Class I / II / III colors
