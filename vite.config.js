@@ -13,7 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": `${import.meta.dirname}/src`,
-      "@components": `${import.meta.dirname}/src/componenets`,
+      "@components": `${import.meta.dirname}/src/components`,
       "@hooks": `${import.meta.dirname}/src/hooks`,
       "@lib": `${import.meta.dirname}/src/lib`,
       "@pages": `${import.meta.dirname}/src/pages`,
