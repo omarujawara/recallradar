@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
     {path: '/', element: <Landing />},
     {path: '/login', element: <Login />},
     {path: '/signup', element: <Signup />},
-    {path: '/recalls/:id,', element: <RecallDetail />},
+    {path: '/recalls/:id', element: <RecallDetail />},
 
     // Logged-in users (individual and business)
     {
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
 
     // Admin only
     {
-        element: <ProtectedRoute />,
+        element: <ProtectedRoute requireAdmin/>,
         children: [
             {
                 path: '/admin',
