@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "supabase/functions/_shared/fetchOpenFDA.js", "supabase/functions/_shared/normalizeOpenFDA.js"]
+}
