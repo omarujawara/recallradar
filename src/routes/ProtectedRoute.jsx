@@ -13,7 +13,7 @@ export default function ProtectedRoute({ requireAdmin = false }) {
         );
     }
 
-    // Note logged in: go to login, and remember where they were headed
+    // Not logged in: go to login, and remember where they were headed
     if (!user)
         return <Navigate to="/login" replace state={{from: location}} />;
 
