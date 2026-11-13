@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
+import PublicLayout from '@/components/layout/PublicLayout';
 import AppLayout from '@/components/layout/AppLayout';
 import AdminLayout from '@/components/layout/AdminLayout';
 
@@ -21,10 +22,15 @@ import RecallForm from '@pages/admin/RecallForm';
 
 export const router = createBrowserRouter([
     // public: guests can search and read recall details
-    {path: '/', element: <Landing />},
-    {path: '/login', element: <Login />},
-    {path: '/signup', element: <Signup />},
-    {path: '/recalls/:id', element: <RecallDetail />},
+    {
+        element: <PublicLayout />,
+        children: [
+        { path: '/', element: <Landing /> },
+        { path: '/login', element: <Login /> },
+        { path: '/signup', element: <Signup /> },
+        { path: '/recalls/:id', element: <RecallDetail /> },
+        ],
+    },
 
     // Logged-in users (individual and business)
     {
