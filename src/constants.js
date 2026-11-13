@@ -28,3 +28,11 @@ export const CLASSIFICATION_INFO = {
 };
 
 export const EXAMPLE_SEARCHES = ['peanut', 'Listeria', 'Salmonella', 'milk'];
+
+export const BUSINESS_TYPES = [
+  { value: 'restaurant', label: 'Restaurant' },
+  { value: 'grocery', label: 'Grocery store' },
+  { value: 'cafe', label: 'Café or bakery' },
+  { value: 'distributor', label: 'Distributor' },
+  { value: 'other', label: 'Other' },
+];
