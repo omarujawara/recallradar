@@ -1,19 +1,20 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-import AppLayout from '@components/layout/AppLayout';
-import AdminLayout from '@components/layout/AdminLayout';
+import PublicLayout from '@/components/layout/PublicLayout';
+import AppLayout from '@/components/layout/AppLayout';
+import AdminLayout from '@/components/layout/AdminLayout';
 
-import Landing from '@pages/public/Landing';
-import Login from '@pages/public/Login';
-import Signup from '@pages/public/Signup';
+import Landing from '@/pages/public/Landing';
+import Login from '@/pages/public/Login';
+import Signup from '@/pages/public/Signup';
 
-import Dashboard from '@pages/app/Dashboard';
-import Search from '@pages/app/Search';
-import RecallDetail from '@pages/app/RecallDetail';
-import Watchlist from '@pages/app/Watchlist';
-import Alerts from '@pages/app/Alerts';
-import Settings from '@pages/app/Settings';
+import Dashboard from '@/pages/app/Dashboard';
+import Search from '@/pages/app/Search';
+import RecallDetail from '@/pages/app/RecallDetail';
+import Watchlist from '@/pages/app/Watchlist';
+import Alerts from '@/pages/app/Alerts';
+import Settings from '@/pages/app/Settings';
 
 import AdminDashboard from '@pages/admin/AdminDashboard';
 import RecallManager from '@pages/admin/RecallManager';
@@ -21,10 +22,15 @@ import RecallForm from '@pages/admin/RecallForm';
 
 export const router = createBrowserRouter([
     // public: guests can search and read recall details
-    {path: '/', element: <Landing />},
-    {path: '/login', element: <Login />},
-    {path: '/signup', element: <Signup />},
-    {path: '/recalls/:id,', element: <RecallDetail />},
+    {
+        element: <PublicLayout />,
+        children: [
+        { path: '/', element: <Landing /> },
+        { path: '/login', element: <Login /> },
+        { path: '/signup', element: <Signup /> },
+        { path: '/recalls/:id', element: <RecallDetail /> },
+        ],
+    },
 
     // Logged-in users (individual and business)
     {
@@ -46,7 +52,7 @@ export const router = createBrowserRouter([
 
     // Admin only
     {
-        element: <ProtectedRoute />,
+        element: <ProtectedRoute requireAdmin/>,
         children: [
             {
                 path: '/admin',
