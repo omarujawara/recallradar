@@ -36,3 +36,15 @@ export const BUSINESS_TYPES = [
   { value: 'distributor', label: 'Distributor' },
   { value: 'other', label: 'Other' },
 ];
+
+export const WATCH_ITEM_TYPES = [
+  { value: 'allergen', label: 'Allergen', hint: 'An ingredient you need to avoid, like peanut or milk.', placeholder: 'peanut' },
+  { value: 'brand', label: 'Brand', hint: 'A brand name printed on the package.', placeholder: 'Brand name' },
+  { value: 'product', label: 'Product', hint: 'A kind of food, like ice cream or spinach.', placeholder: 'ice cream' },
+  { value: 'keyword', label: 'Keyword', hint: 'Any word or phrase, like Listeria.', placeholder: 'Listeria' },
+  { value: 'vendor', label: 'Supplier', hint: 'A company you buy from.', placeholder: 'Supplier name', businessOnly: true },
+  { value: 'lot_upc', label: 'Lot or UPC', hint: 'A lot number or UPC exactly as printed on the package.', placeholder: '632687615989', businessOnly: true },
+];
+
+// The nine major U.S. food allergens, as search terms
+export const COMMON_ALLERGENS = ['milk', 'egg', 'fish', 'shellfish', 'tree nut', 'peanut', 'wheat', 'soy', 'sesame'];
