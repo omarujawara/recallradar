@@ -30,3 +30,4 @@ supabase\functions\.env
 # Supabase local CLI state
 supabase/.temp/
 supabase/.branches/
+supabase/snippets/

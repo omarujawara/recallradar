@@ -20,7 +20,7 @@ create type public.sync_status as enum ('running', 'success', 'failed', 'skipped
 -- profiles (one row per auth.users row) 
 -- ---------------------------------------------------------------------
 create table public.profiles (
-  id uuid primary key references auth.users (id) on delete cascade unique, -- one-to-one relation
+  id uuid primary key references auth.users (id) on delete cascade,
   display_name text,
   account_type public.account_type not null default 'individual',
   role public.user_role not null default 'user',
