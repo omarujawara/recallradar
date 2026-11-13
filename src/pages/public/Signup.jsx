@@ -22,7 +22,7 @@ export default function Signup() {
     displayName: '',
     email: '',
     password: '',
-    accountType: 'consumer',
+    accountType: 'individual',
     businessName: '',
     businessType: '',
   });
@@ -101,10 +101,10 @@ export default function Signup() {
             className="grid grid-cols-2 gap-2"
           >
             <Label
-              htmlFor="type-consumer"
+              htmlFor="type-individual"
               className="flex cursor-pointer items-center gap-2 rounded-md border p-3 has-[[data-state=checked]]:border-primary"
             >
-              <RadioGroupItem value="consumer" id="type-consumer" />
+              <RadioGroupItem value="individual" id="type-individual" />
               Personal
             </Label>
             <Label
