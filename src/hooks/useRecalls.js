@@ -99,3 +99,47 @@ export function useLatestReportDate() {
 
     return date;
 }
+
+const DETAIL_COLUMNS = `
+  id, recall_number, status, classification, product_description, product_quantity,
+  code_info, reason_for_recall, recalling_firm, city, state, country,
+  voluntary_mandated, distribution_pattern, is_nationwide,
+  recall_initiation_date, report_date, termination_date,
+  recall_distribution_states ( state_code )
+`;
+
+/** Load one recall by id, with the states it was sold in. */
+export function useRecall(id) {
+  const [result, setResult] = useState({ id: null, recall: null });
+
+  useEffect(() => {
+    // ids are numbers; anything else can't exist
+    if (!/^\d+$/.test(id ?? '')) {
+      setResult({ id, recall: null });
+      return;
+    }
+
+    let ignore = false;
+    supabase
+      .from('recalls')
+      .select(DETAIL_COLUMNS)
+      .eq('id', id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (ignore) return;
+        if (error) console.error('Failed to load recall:', error.message);
+        setResult({ id, recall: data ?? null });
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [id]);
+
+  const loading = result.id !== id;
+  return {
+    recall: loading ? null : result.recall,
+    loading,
+    notFound: !loading && !result.recall,
+  };
+}
