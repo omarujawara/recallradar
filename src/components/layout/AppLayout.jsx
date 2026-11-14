@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import SiteFooter from './SiteFooter';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { AlertsProvider, useAlerts } from '@/hooks/useAlerts';
 
 const NAV_LINKS = [
   { to: '/app', label: 'Dashboard', end: true },
@@ -12,8 +13,9 @@ const NAV_LINKS = [
   { to: '/app/settings', label: 'Settings' },
 ];
 
-export default function AppLayout() {
+function AppShell() {
   const { profile, signOut } = useAuth();
+  const { unreadCount } = useAlerts();
   const navigate = useNavigate();
 
   async function handleLogOut() {
@@ -55,6 +57,12 @@ export default function AppLayout() {
                   }
                 >
                   {link.label}
+                  {link.to === '/app/alerts' && unreadCount > 0 && (
+                    <span className="ml-1.5 rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                      <span className="sr-only"> unread</span>
+                    </span>
+                  )}
                 </NavLink>
               </li>
             ))}
@@ -67,5 +75,13 @@ export default function AppLayout() {
       </main>
       <SiteFooter />
     </div>
+  );
+}
+
+export default function AppLayout() {
+  return (
+    <AlertsProvider>
+      <AppShell />
+    </AlertsProvider>
   );
 }

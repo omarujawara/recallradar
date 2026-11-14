@@ -7,6 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { COMMON_ALLERGENS, WATCH_ITEM_TYPES } from '@/constants';
+import { useAlerts } from '@/hooks/useAlerts';
+
 
 function matchCountText(count) {
   if (count === 0) return 'No matching recalls';
@@ -14,6 +16,9 @@ function matchCountText(count) {
 }
 
 export default function Watchlist() {
+  
+  const { refresh: refreshAlerts } = useAlerts();
+
   const { isBusiness } = useAuth();
   const { items, loading, error, addItem, removeItem } = useWatchlist();
 
@@ -45,6 +50,8 @@ export default function Watchlist() {
       return;
     }
 
+    refreshAlerts();
+
     const count = item?.matchCount ?? 0;
     setMessage({
       kind: 'success',
@@ -59,6 +66,7 @@ export default function Watchlist() {
   async function remove(item) {
     setMessage(null);
     const { error: removeError } = await removeItem(item.id);
+    refreshAlerts();
     setMessage(
       removeError
         ? { kind: 'error', text: removeError }

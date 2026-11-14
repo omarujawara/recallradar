@@ -19,3 +19,13 @@ export function truncate(text, max = 110) {
     const cut = text.slice(0,max);
     return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:.]$/, '')}...`;
 }
+
+/** "2026-11-13T15:04:05Z" -> "Nov 13, 2026" in the user's time zone */
+export function formatTimestamp(timestamp) {
+  if (!timestamp) return '';
+  return new Date(timestamp).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
