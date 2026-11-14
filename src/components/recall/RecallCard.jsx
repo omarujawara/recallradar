@@ -3,7 +3,7 @@ import ClassBadge from './ClassBadge';
 import StatusBadge from './StatusBadge';
 import { formatDate, truncate } from '@/utils/format';
 
-export default function RecallCard({ recall }) {
+export default function RecallCard({ recall, children }) {
   return (
     <Link
       to={`/recalls/${recall.id}`}
@@ -26,6 +26,8 @@ export default function RecallCard({ recall }) {
       {recall.reason_for_recall && (
         <p className="mt-2 line-clamp-2 max-w-prose text-sm">{recall.reason_for_recall}</p>
       )}
+
+      {children}
     </Link>
   );
 }
