@@ -48,3 +48,12 @@ export const WATCH_ITEM_TYPES = [
 
 // The nine major U.S. food allergens, as search terms
 export const COMMON_ALLERGENS = ['milk', 'egg', 'fish', 'shellfish', 'tree nut', 'peanut', 'wheat', 'soy', 'sesame'];
+
+// Where in the recall a watchlist term was found
+export const MATCHED_FIELD_LABELS = {
+  reason_for_recall: 'the reason for recall',
+  product_description: 'the product description',
+  recalling_firm: 'the company name',
+  code_info: 'the package codes',
+  distribution_pattern: 'the distribution area',
+};
