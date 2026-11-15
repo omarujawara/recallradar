@@ -72,9 +72,13 @@ export function AuthProvider ({children}) {
 
     const signOut = () => supabase.auth.signOut();
 
-    // Still loading if the profile for the current user hasn't arrived yet
-    const loading =
-        sessionLoading || profileLoading || (Boolean(userId) && profile?.id !== userId);
+    /** Still loading if the profile for the current user hasn't arrived yet
+    const loading = sessionLoading || profileLoading || (Boolean(userId) && profile?.id !== userId);
+    **/
+
+    // Loading until we know the session, and (if logged in) until that user's profile has arrived.
+    // A background refresh of an existing profile doesn't count.
+    const loading = sessionLoading || (Boolean(userId) && profile?.id !== userId);
 
     const value = {
         session,
