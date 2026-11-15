@@ -6,7 +6,7 @@ export const PAGE_SIZE = 20;
 
 // Only the columns a list needs. Never select `raw` for lists; its large.
 const LIST_COLUMNS = 
-    'id, recall_number, product_description, reason_for_recall, recalling_firm, status, classification, report_date';
+    'id, recall_number, source, product_description, reason_for_recall, recalling_firm, status, classification, report_date';
 
 function buildSearchQuery({ query, status}) {
     let request = supabase
