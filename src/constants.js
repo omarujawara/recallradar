@@ -57,3 +57,12 @@ export const MATCHED_FIELD_LABELS = {
   code_info: 'the package codes',
   distribution_pattern: 'the distribution area',
 };
+
+export const RECALL_STATUS_OPTIONS = [
+  { value: 'Ongoing', label: 'Ongoing (active)' },
+  { value: 'Pending', label: 'Pending (active)' },
+  { value: 'Completed', label: 'Completed (closed)' },
+  { value: 'Terminated', label: 'Terminated (closed)' },
+];
+
+export const CLASSIFICATION_OPTIONS = ['Class I', 'Class II', 'Class III', 'Not Yet Classified'];
