@@ -22,7 +22,10 @@ function Row({ label, children }) {
 export default function AdminDashboard() {
   const [overview, setOverview] = useState(null);
   const [error, setError] = useState(false);
-
+  const [reloadKey, setReloadKey] = useState(0);
+  const [importing, setImporting] = useState(false);
+  const [importMessage, setImportMessage] = useState(null); // { kind: 'success' | 'error', text }
+  
   useEffect(() => {
     let ignore = false;
 
@@ -60,7 +63,47 @@ export default function AdminDashboard() {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [reloadKey]);
+
+  function importSummary(result) {
+    if (result.status === 'skipped') {
+      return 'Already up to date. The FDA hasn’t published new reports since the last import.';
+    }
+    const parts = [
+      `Added ${result.inserted.toLocaleString()} new ${result.inserted === 1 ? 'recall' : 'recalls'} and checked ${result.updated.toLocaleString()} existing ${result.updated === 1 ? 'one' : 'ones'}.`,
+    ];
+    if (result.changes > 0) {
+      parts.push(
+        `${result.changes} ${result.changes === 1 ? 'change was' : 'changes were'} recorded. Users following a recall whose status changed have been alerted.`,
+      );
+    }
+    if (result.rejected > 0) {
+      parts.push(`${result.rejected} FDA ${result.rejected === 1 ? 'record was' : 'records were'} skipped because of missing data.`);
+    }
+    return parts.join(' ');
+  }
+
+  async function runImport() {
+    setImporting(true);
+    setImportMessage(null);
+
+    const { data, error: invokeError } = await supabase.functions.invoke('import-openfda', { body: {} });
+
+    if (invokeError) {
+      let text = 'The import couldn’t run. Try again in a few minutes.';
+      try {
+        const details = await invokeError.context?.json();
+        if (details?.error) text = details.error;
+      } catch {
+        // keep the default message
+      }
+      setImportMessage({ kind: 'error', text });
+    } else {
+      setImportMessage({ kind: 'success', text: importSummary(data) });
+      setReloadKey((key) => key + 1);
+    }
+    setImporting(false);
+  }
 
   return (
     <div className="max-w-2xl">
@@ -114,6 +157,21 @@ export default function AdminDashboard() {
             ) : (
               <p className="mt-2 text-muted-foreground">No import has been recorded.</p>
             )}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Button onClick={runImport} disabled={importing}>
+                {importing ? 'Importing…' : 'Import new FDA reports'}
+              </Button>
+              {importing && (
+                <span className="text-sm text-muted-foreground">This can take up to a minute.</span>
+              )}
+            </div>
+            <p
+              role="status"
+              aria-live="polite"
+              className={`mt-3 max-w-prose text-sm ${importMessage?.kind === 'error' ? 'text-destructive' : ''}`}
+            >
+              {importMessage?.text}
+            </p>
           </section>
         </>
       )}
