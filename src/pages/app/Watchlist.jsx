@@ -107,6 +107,7 @@ export default function Watchlist() {
           <div className="space-y-2">
             <Label htmlFor="item-term">{currentType.label}</Label>
             <Input
+              className="h-10"
               id="item-term"
               value={term}
               onChange={(event) => setTerm(event.target.value)}
