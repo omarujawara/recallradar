@@ -11,10 +11,10 @@ export const MAX_SKIP = 25000;     // openFDA max skip
  * Build an openFDA search string.
  * Dates are YYYYMMDD strings. Omit status to get every status.
  */
-export function buildSearch({ status, from, to } = {}) {
+export function buildSearch({ status, from, to, dateField = 'report_date' } = {}) {
   const parts = [];
   if (status) parts.push(`status:"${status}"`);
-  if (from || to) parts.push(`report_date:[${from ?? '20040101'} TO ${to ?? '20991231'}]`);
+  if (from || to) parts.push(`${dateField}:[${from ?? '20040101'} TO ${to ?? '20991231'}]`);
   return parts.join(' AND ');
 }
 
