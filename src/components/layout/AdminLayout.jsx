@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 const NAV_LINKS = [
   { to: '/admin', label: 'Overview', end: true },
   { to: '/admin/recalls', label: 'Recalls' },
+  { to: '/admin/reports', label: 'Reports'},
 ];
 
 export default function AdminLayout() {
@@ -20,7 +21,7 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b">
+      <header className="border-b print:hidden">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 pt-4">
           <Link to="/admin" className="text-lg font-semibold tracking-tight">
             RecallRadar Admin Page
@@ -68,7 +69,10 @@ export default function AdminLayout() {
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
         <Outlet />
       </main>
-      <SiteFooter />
+      
+      <div className="print:hidden">
+        <SiteFooter />
+      </div>
     </div>
   );
 }

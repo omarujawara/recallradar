@@ -66,3 +66,11 @@ export const RECALL_STATUS_OPTIONS = [
 ];
 
 export const CLASSIFICATION_OPTIONS = ['Class I', 'Class II', 'Class III', 'Not Yet Classified'];
+
+export const RANGE_PRESETS = [
+  { value: '30d', label: 'Last 30 days' },
+  { value: '90d', label: 'Last 90 days' },
+  { value: '12m', label: 'Last 12 months' },
+  { value: 'ytd', label: 'This year' },
+  { value: 'custom', label: 'Custom range' },
+];
