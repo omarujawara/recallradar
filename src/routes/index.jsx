@@ -20,6 +20,8 @@ import AdminDashboard from '@pages/admin/AdminDashboard';
 import RecallManager from '@pages/admin/RecallManager';
 import RecallForm from '@pages/admin/RecallForm';
 
+import Reports from '@/pages/admin/Reports';
+
 export const router = createBrowserRouter([
     // public: guests can search and read recall details
     {
@@ -62,6 +64,7 @@ export const router = createBrowserRouter([
                     { path: 'recalls', element: <RecallManager /> },
                     { path: 'recalls/new', element: <RecallForm /> },
                     { path: 'recalls/:id/edit', element: <RecallForm /> },
+                    { path: 'reports', element: <Reports /> },
                 ],
             },
         ],
