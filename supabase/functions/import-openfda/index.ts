@@ -11,11 +11,12 @@ const SOURCES: Record<string, string> = {
   device: "openfda_device",
 };
 
-// Lets the React app (a different origin) call this function
 const corsHeaders = {
+  // Wildcard required because this endpoint serves both the React app and external tools
   "Access-Control-Allow-Origin": "*",
+  // `x-import-secret` authenticates requests from external tools like Retool
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-import-secret",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -59,23 +60,44 @@ Deno.serve(async (req) => {
     { auth: { persistSession: false } },
   );
 
-  // Only admins may run an import
-  const token = (req.headers.get("Authorization") ?? "").replace(
-    /^Bearer\s+/i,
-    "",
-  );
-  const { data: userData } = await supabase.auth.getUser(token);
-  if (!userData?.user) {
-    return json({ error: "Log in as an admin to run an import." }, 401);
-  }
+  /**
+   * Authenticates the import request via one of two methods:
+   * 1. An authenticated admin session from the client app.
+   * 2. A valid `IMPORT_SECRET` API key passed in the request headers.
+   */
 
-  const { data: caller } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", userData.user.id)
-    .maybeSingle();
-  if (caller?.role !== "admin") {
-    return json({ error: "Only admins can run an import." }, 403);
+  // Retrieve the expected secret from Supabase Edge Function environment variables.
+  const importSecret = Deno.env.get("IMPORT_SECRET");
+
+  // Read the custom API secret from the incoming request header.
+  const providedSecret = req.headers.get("x-import-secret");
+
+  // Validate the API secret (both values must exist and match).
+  const hasValidImportSecret = !!importSecret &&
+    !!providedSecret &&
+    providedSecret === importSecret;
+
+  // If no valid API secret is provided, fall back to standard user authentication
+  // and verify that the caller has admin privileges.
+  if (!hasValidImportSecret) {
+    // Only admins may run an import
+    const token = (req.headers.get("Authorization") ?? "").replace(
+      /^Bearer\s+/i,
+      "",
+    );
+    const { data: userData } = await supabase.auth.getUser(token);
+    if (!userData?.user) {
+      return json({ error: "Log in as an admin to run an import." }, 401);
+    }
+
+    const { data: caller } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", userData.user.id)
+      .maybeSingle();
+    if (caller?.role !== "admin") {
+      return json({ error: "Only admins can run an import." }, 403);
+    }
   }
 
   // Options (all optional):
